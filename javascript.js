@@ -34,7 +34,7 @@ function playRound(playerSelection, computerSelection) {
 
 function game() {
     //Use the previous function inside of this one to play a 5 round game that keeps score and reports
-    //a winner and a loser at the very end
+    //a winner and a loser at the end
     let computerSelection;
     let playerSelection;
     let playerScore = 0;
