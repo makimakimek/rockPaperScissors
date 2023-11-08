@@ -32,37 +32,71 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
-    //Use the previous function inside of this one to play a 5 round game that keeps score and reports
-    //a winner and a loser at the end
-    let computerSelection;
-    let playerSelection;
-    let playerScore = 0;
-    let computerScore = 0;
+function forEventListeners(button, playerScore, computerScore) {   
+    //to prevent further game play
+    if (playerScore === 5 || computerScore === 5) {
+        return;
+    } 
 
-    for (let i = 0; i < 5; i++) {
-        computerSelection = getComputerChoice();
-        playerSelection = prompt("rock, paper, or scissors?");
-        let result = playRound(playerSelection, computerSelection);
-        alert(result);
+    const results = document.querySelector('#results');
+    const scores = document.querySelector('#scores');
 
-        let whoWon = result.slice(0, 11);
-        if (whoWon === "you've won!") {
-            playerScore++;
-        } else if (whoWon === "you've lost") {
-            computerScore++;
-        }
+    let computerSelection = getComputerChoice();
+
+    endResult = playRound(button, computerSelection);
+    results.textContent = endResult;
+
+    whoWon = endResult.slice(0, 11);
+    if (whoWon === "you've won!") {
+        playerScore++;
+    } else if (whoWon === "you've lost") {
+        computerScore++;
     }
 
-    if (computerScore > playerScore) {
-        alert(`the computer won with an end score of ${computerScore} to ${playerScore}`);
-    } else if (playerScore > computerScore) {
-        alert(`you won with an end score of ${playerScore} to ${computerScore}!`);
-    } else if (playerScore === computerScore) {
-        alert(`you're tied with an end score of ${playerScore} to ${computerScore}`);
+    scores.textContent = playerScore + ' - ' + computerScore;
+
+    //end of game
+    if (playerScore === 5) {
+        results.textContent = `you won with an end score of ${playerScore} to ${computerScore}!`;
+    } else if (computerScore === 5) {
+        results.textContent = `the computer won with an end score of ${computerScore} to ${playerScore}`;
     }
+
+    let scoresArray = [playerScore, computerScore];
+
+    return scoresArray;
 }
 
-const playerSelection = "rock";
-const computerSelection = getComputerChoice();
+function game() {
+    let playerScore = 0;
+    let computerScore = 0;    
+
+    //getting the button elements from index.html
+    const rockButton = document.querySelector('#rock');
+    const paperButton = document.querySelector('#paper');
+    const scissorsButton = document.querySelector('#scissors');
+    
+    let scoresArray;
+        
+    //for player selection
+    rockButton.addEventListener('click', () => {
+        scoresArray = forEventListeners(rockButton.id, playerScore, computerScore);
+        playerScore = scoresArray[0];
+        computerScore = scoresArray[1];
+    });
+    
+    paperButton.addEventListener('click', () => {
+        scoresArray = forEventListeners(paperButton.id, playerScore, computerScore);
+        playerScore = scoresArray[0];
+        computerScore = scoresArray[1];
+    });
+    
+    scissorsButton.addEventListener('click', () => {
+        scoresArray = forEventListeners(scissorsButton.id, playerScore, computerScore);
+        playerScore = scoresArray[0];
+        computerScore = scoresArray[1];
+    });
+
+}
+
 game();
